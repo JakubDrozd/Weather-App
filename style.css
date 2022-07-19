@@ -9,12 +9,12 @@
   border-top: 6px solid blue;
   border-radius: 100%;
   margin: auto;
-  display: none;
+  visibility: hidden;
   animation: 1s spin infinite linear;
 }
 
 #loading.display {
-  display: block;
+  visibility: visible;
 }
 
 @keyframes spin {
