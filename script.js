@@ -1,9 +1,12 @@
+const loader = document.querySelector("#loading");
+
 if (window.navigator.geolocation) {
   window.navigator.geolocation.getCurrentPosition(successfulLookup),
     console.log;
 }
 
 async function successfulLookup(position) {
+  displayLoading();
   let lat = await position.coords.latitude;
   let lon = await position.coords.longitude;
   fetch(
@@ -11,6 +14,7 @@ async function successfulLookup(position) {
   )
     .then((response) => response.json())
     .then((response) => buildSite(response));
+  hideLoading();
 }
 
 async function fetchWeather(place) {
@@ -44,9 +48,20 @@ function buildSite(data) {
   windSpeed.innerHTML = `<i class="fa-solid fa-wind"></i>Wind: <strong> ${data.current.wind_speed}km/h </strong> `;
 }
 
-const searchBtn = document.querySelector("#search-addon");
+const searchBtn = document.querySelector("#basic-addon2");
 searchBtn.addEventListener("click", (event) => {
-  const searchField = document.querySelector(`input[type="search"]`);
+  const searchField = document.querySelector(`.form-control`);
   let city = searchField.value;
   fetchWeather(city);
 });
+
+function displayLoading() {
+  loader.classList.add("display");
+  setTimeout(() => {
+    loader.classList.remove("display");
+  }, 5000);
+}
+
+function hideLoading() {
+  loader.classList.remove("display");
+}
