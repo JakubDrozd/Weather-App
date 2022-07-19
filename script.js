@@ -6,20 +6,19 @@ if (window.navigator.geolocation) {
 }
 
 async function successfulLookup(position) {
-  displayLoading();
   let lat = await position.coords.latitude;
   let lon = await position.coords.longitude;
   fetch(
-    `http://api.weatherstack.com/current?access_key=8632c375ab98fef7197a62b66a5fee10&query=${lat},${lon}`
+    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=69d30b66a929001be23d0422d1cff9b8&units=metric&lang=en
+    `
   )
     .then((response) => response.json())
     .then((response) => buildSite(response));
-  hideLoading();
 }
 
 async function fetchWeather(place) {
   fetch(
-    `http://api.weatherstack.com/current?access_key=8632c375ab98fef7197a62b66a5fee10&query=${place}`
+    `https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=69d30b66a929001be23d0422d1cff9b8&units=metric&lang=en`
   )
     .then((data) => data.json())
     .then((data) => buildSite(data));
@@ -33,19 +32,29 @@ function buildSite(data) {
   }
 
   const place = document.querySelector(".sfw-normal");
-  place.textContent = `${data.location.name}, ${data.location.country}        ${data.current.observation_time}`;
+  place.innerHTML = `${data.name}, ${data.sys.country} <img src='http://openweathermap.org/img/w/${data.weather[0].icon}.png'>${data.weather[0].description}`;
 
   const currentTemp = document.querySelector(".temperature");
-  currentTemp.innerHTML = `<i class="fa-solid fa-temperature-half"></i> Temperature: <strong> ${data.current.temperature}°C </strong>`;
+  currentTemp.innerHTML = `<i class="fa-solid fa-temperature-half"></i> Temperature: <strong> ${Math.round(
+    data.main.temp
+  )}°C </strong>`;
 
   const currentPressure = document.querySelector(".pressure");
-  currentPressure.innerHTML = `<i class="fa-solid fa-arrow-down"></i> Pressure: <strong> ${data.current.pressure} Pa </strong>`;
+  currentPressure.innerHTML = `<i class="fa-solid fa-arrow-down"></i> Pressure: <strong> ${data.main.pressure} Pa </strong>`;
 
   const currentHumidity = document.querySelector(".humidity");
-  currentHumidity.innerHTML = `<i class="fa-solid fa-droplet"></i> Humidity: <strong> ${data.current.humidity}% </strong>`;
+  currentHumidity.innerHTML = `<i class="fa-solid fa-droplet"></i> Humidity: <strong> ${data.main.humidity}% </strong>`;
 
   const windSpeed = document.querySelector(".windSpeed");
-  windSpeed.innerHTML = `<i class="fa-solid fa-wind"></i>Wind: <strong> ${data.current.wind_speed}km/h </strong> `;
+  windSpeed.innerHTML = `<i class="fa-solid fa-wind"></i>Wind: <strong> ${Math.round(
+    data.wind.speed * 3.6
+  )}km/h </strong> `;
+
+  const cloud = document.querySelector(".clouds");
+  cloud.innerHTML = `<i class="fa-solid fa-cloud"></i> Clouds: <strong>${data.clouds.all}%</strong>`;
+
+  const desc = document.querySelector(".weatherDesc");
+  desc.innerHTML = `<img src='http://openweathermap.org/img/w/${data.weather[0].icon}.png'><strong>${data.weather[0].description}</strong>`;
 }
 
 const searchBtn = document.querySelector("#basic-addon2");
