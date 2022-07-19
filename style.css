@@ -1,3 +1,7 @@
+body {
+  background: url("https://c.wallhere.com/photos/ec/3b/1920x1080_px_animals_Firewatch_forest_minimalism_mountains-527542.png!d");
+}
+
 #basic-addon2:hover {
   cursor: pointer;
 }
@@ -24,4 +28,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.header {
+  color: #f8f8f8;
 }
