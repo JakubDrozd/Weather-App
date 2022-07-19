@@ -24,6 +24,10 @@ async function fetchWeather(place) {
 function buildSite(data) {
   console.log(data);
 
+  if (data === undefined) {
+    window.navigator.geolocation.getCurrentPosition(successfulLookup);
+  }
+
   const place = document.querySelector(".sfw-normal");
   place.textContent = `${data.location.name}, ${data.location.country}        ${data.current.observation_time}`;
 
