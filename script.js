@@ -32,7 +32,13 @@ function buildSite(data) {
   }
 
   const place = document.querySelector(".sfw-normal");
-  place.innerHTML = `${data.name}, ${data.sys.country} <img src='http://openweathermap.org/img/w/${data.weather[0].icon}.png'>${data.weather[0].description}`;
+  place.innerHTML = `${data.name}, ${
+    data.sys.country
+  } <img src='http://openweathermap.org/img/w/${data.weather[0].icon}.png'>${
+    data.weather[0].description
+  } <span style='color: gray;'>${Math.round(data.main.temp_max)} | ${Math.round(
+    data.main.temp_min
+  )}</span>`;
 
   const currentTemp = document.querySelector(".temperature");
   currentTemp.innerHTML = `<i class="fa-solid fa-temperature-half"></i> Temperature: <strong> ${Math.round(
